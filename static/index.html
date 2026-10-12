@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fahad TTS Studio — Self-Hosted Voice Platform</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <div class="logo">🎙️ Fahad <span>TTS Studio</span></div>
+  <div class="tagline">100% self-hosted · No paid APIs · Your voices, your server</div>
+</header>
+
+<main>
+  <section class="card">
+    <h2>1 · Choose Voice</h2>
+    <div class="row">
+      <div class="field">
+        <label>Language</label>
+        <select id="langSelect"><option value="">All languages</option></select>
+      </div>
+      <div class="field">
+        <label>Voice type</label>
+        <select id="genderSelect">
+          <option value="">All</option>
+          <option value="male">Men</option>
+          <option value="female">Women</option>
+          <option value="unknown">Other</option>
+        </select>
+      </div>
+      <div class="field grow">
+        <label>Voice <span id="voiceCount"></span></label>
+        <select id="voiceSelect"></select>
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button id="previewBtn" class="btn ghost">▶ Preview voice</button>
+      </div>
+    </div>
+    <audio id="previewAudio" controls class="hidden"></audio>
+  </section>
+
+  <section class="card">
+    <h2>2 · Your Text <span class="muted" id="charCount">0 / 60000</span></h2>
+    <textarea id="textInput" rows="12" placeholder="Paste your narration script here...
+
+Tips:
+• ... is auto-cleaned (no loop bug)
+• Use [pause] or [pause:2s] for silence
+• Up to ~1 hour of audio"></textarea>
+    <div class="row">
+      <div class="field">
+        <label>Speed <span id="speedVal">1.0×</span></label>
+        <input type="range" id="speedRange" min="0.5" max="2" step="0.05" value="1">
+      </div>
+      <div class="field">
+        <label>Format</label>
+        <select id="formatSelect">
+          <option value="mp3">MP3</option>
+          <option value="wav">WAV</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Title (for history)</label>
+        <input type="text" id="titleInput" placeholder="e.g. Dyatlov Part 1" maxlength="120">
+      </div>
+      <div class="field">
+        <label>&nbsp;</label>
+        <button id="generateBtn" class="btn primary">⚡ Generate Audio</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card hidden" id="jobCard">
+    <h2>3 · Generating</h2>
+    <div class="progress"><div id="progressBar"></div></div>
+    <div id="jobStatus" class="muted">Queued…</div>
+    <audio id="resultAudio" controls class="hidden"></audio>
+    <div class="row">
+      <a id="downloadBtn" class="btn primary hidden" href="#" download>⬇ Download</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4 · History</h2>
+    <div id="historyList" class="history"></div>
+  </section>
+</main>
+
+<footer>Made for Fahad · Piper TTS engine · MIT voices · Runs fully offline</footer>
+
+<script src="app.js"></script>
+</body>
+</html>
