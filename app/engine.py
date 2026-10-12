@@ -92,11 +92,28 @@ MIN_MODEL_BYTES = 5 * 1024 * 1024  # sanity: all piper models are 15MB+
 
 
 def _download_voice(voice_key: str):
-    subprocess.run(
-        [os.sys.executable, "-m", "piper.download_voices",
-         "--download-dir", VOICES_DIR, voice_key],
-        check=True, capture_output=True, text=True, timeout=900,
-    )
+    """Download voice model directly from Hugging Face (piper.download_voices is unreliable)."""
+    import urllib.request
+    # voice_key like "en_US-lessac-medium" -> lang="en_US", name="lessac", quality="medium"
+    parts = voice_key.split("-")
+    lang = parts[0]  # en_US
+    name = parts[1]  # lessac
+    quality = parts[2] if len(parts) > 2 else "medium"
+    lang_prefix = lang.split("_")[0]  # en
+    base = f"https://huggingface.co/rhasspy/piper-voices/resolve/main/{lang_prefix}/{lang}/{name}/{quality}"
+    for ext in [".onnx", ".onnx.json"]:
+        url = f"{base}/{voice_key}{ext}"
+        dest = os.path.join(VOICES_DIR, f"{voice_key}{ext}")
+        if os.path.exists(dest) and os.path.getsize(dest) > 1024:
+            continue
+        print(f"Downloading {url} ...", flush=True)
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=300) as r, open(dest, "wb") as f:
+            while True:
+                chunk = r.read(8192)
+                if not chunk:
+                    break
+                f.write(chunk)
 
 
 def ensure_voice(voice_key: str) -> str:
