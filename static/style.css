@@ -73,6 +73,19 @@ audio { width: 100%; margin-top: 12px; }
 .hist-item .btn { padding: 7px 12px; font-size: 12px; }
 .hist-item .del { background: transparent; color: #ff6b6b; border: 1px solid #5a2a2a; }
 footer { text-align: center; color: var(--muted); font-size: 12px; padding: 20px; }
+.tabs { display: flex; gap: 10px; justify-content: center; margin-top: 16px; }
+.tab {
+  background: transparent; color: var(--muted);
+  border: 1px solid var(--border); border-radius: 8px;
+  padding: 10px 20px; font-size: 14px; font-weight: 700; cursor: pointer;
+}
+.tab.active { background: var(--orange-dark); color: #171717; border-color: var(--orange-dark); }
+.tab:hover:not(.active) { border-color: var(--orange); color: var(--text); }
+.warning-box {
+  background: rgba(255,160,0,.12); border: 1px solid var(--orange-dark);
+  border-radius: 8px; padding: 12px 16px; margin-bottom: 16px;
+  font-size: 14px; color: #ffcf87;
+}
 @media (max-width: 640px) {
   .field { min-width: 100%; }
   input[type=range] { width: 100%; }

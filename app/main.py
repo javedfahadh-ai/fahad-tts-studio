@@ -7,7 +7,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
-from . import db, engine, jobs
+from . import db, engine, jobs, songs
 from . import voices as voice_catalog
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -113,6 +113,47 @@ def api_history_delete(rec_id: int):
 @app.get("/api/health")
 def api_health():
     return {"ok": True, "engine": "piper"}
+
+
+# --- Song Studio (ACE-Step, requires GPU) ---
+class SongRequest(BaseModel):
+    lyrics: str = Field(min_length=1, max_length=5000)
+    genre: str = Field(default="pop, happy, upbeat", max_length=200)
+    voice: str = Field(default="male vocal", max_length=50)
+    duration: int = Field(default=60, ge=15, le=300)
+
+
+@app.get("/api/song/status")
+def api_song_gpu_status():
+    return {"gpu_available": songs.gpu_available()}
+
+
+@app.post("/api/song/generate")
+def api_song_generate(req: SongRequest):
+    try:
+        job_id = songs.create_song_job(req.lyrics, req.genre, req.voice, req.duration)
+        return {"job_id": job_id}
+    except RuntimeError as e:
+        raise HTTPException(status_code=503, detail=str(e))
+
+
+@app.get("/api/song/status/{job_id}")
+def api_song_job_status(job_id: str):
+    job = songs.SONG_JOBS.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail="Job not found")
+    return {
+        "done": job["done"], "progress": job["progress"],
+        "status_text": job["status_text"], "error": job["error"],
+    }
+
+
+@app.get("/api/song/download/{job_id}")
+def api_song_download(job_id: str):
+    job = songs.SONG_JOBS.get(job_id)
+    if not job or not job.get("file"):
+        raise HTTPException(status_code=404, detail="Song not ready")
+    return FileResponse(job["file"], media_type="audio/mpeg", filename=f"song-{job_id}.mp3")
 
 
 # --- frontend ---
