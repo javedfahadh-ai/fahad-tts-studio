@@ -8,16 +8,11 @@
 </head>
 <body>
 <header>
-  <div class="logo">🎙️ Fahad <span>Media Studio</span></div>
-  <div class="tagline">100% self-hosted · No paid APIs · Your voices, your songs</div>
-  <nav class="tabs">
-    <button class="tab active" data-tab="tts">🎙️ Voice Studio</button>
-    <button class="tab" data-tab="song">🎵 Song Studio</button>
-  </nav>
+  <div class="logo">🎙️ Fahad <span>TTS Studio</span></div>
+  <div class="tagline">100% self-hosted · No paid APIs · Your voices, your server</div>
 </header>
 
 <main>
-<div id="tab-tts">
   <section class="card">
     <h2>1 · Choose Voice</h2>
     <div class="row">
@@ -91,63 +86,9 @@ Tips:
     <h2>4 · History</h2>
     <div id="historyList" class="history"></div>
   </section>
-</div><!-- /tab-tts -->
-
-<div id="tab-song" class="hidden">
-  <section class="card">
-    <h2>🎵 Song Studio <span class="muted">AI songs with vocals · 50+ languages</span></h2>
-    <div id="gpuWarning" class="warning-box hidden">
-      ⚠️ Song generation needs a GPU server. The studio is ready — connect your GPU to activate.
-    </div>
-    <label>Lyrics</label>
-    <textarea id="songLyrics" rows="8" placeholder="Write your song lyrics here...&#10;&#10;[verse]&#10;Your verse lines here&#10;&#10;[chorus]&#10;Your chorus lines here"></textarea>
-    <div class="row">
-      <div class="field">
-        <label>Genre / Mood</label>
-        <select id="songGenre">
-          <option value="pop, happy, upbeat">Pop · Happy</option>
-          <option value="pop, sad, emotional">Pop · Sad</option>
-          <option value="hip-hop, rap, energetic">Hip-Hop / Rap</option>
-          <option value="romantic, slow, soft">Romantic · Slow</option>
-          <option value="rock, energetic, powerful">Rock</option>
-          <option value="folk, traditional">Folk</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Voice</label>
-        <select id="songVoice">
-          <option value="male vocal">Male</option>
-          <option value="female vocal">Female</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>Duration</label>
-        <select id="songDuration">
-          <option value="60">1 minute</option>
-          <option value="120">2 minutes</option>
-          <option value="180">3 minutes</option>
-        </select>
-      </div>
-      <div class="field">
-        <label>&nbsp;</label>
-        <button id="songGenBtn" class="btn primary">🎵 Generate Song</button>
-      </div>
-    </div>
-  </section>
-
-  <section class="card hidden" id="songResultCard">
-    <h2>Your Song</h2>
-    <div id="songStatus" class="muted">Generating…</div>
-    <div class="progress"><div id="songProgressBar"></div></div>
-    <audio id="songAudio" controls class="hidden"></audio>
-    <div class="row" style="margin-top:10px;">
-      <a id="songDownload" class="btn primary hidden" href="#" download="song.mp3">⬇ Download MP3</a>
-    </div>
-  </section>
-</div><!-- /tab-song -->
 </main>
 
-<footer>Made for Fahad · Piper TTS + ACE-Step · 100% self-hosted</footer>
+<footer>Made for Fahad · Piper TTS engine · MIT voices · Runs fully offline</footer>
 
 <script src="app.js"></script>
 </body>
